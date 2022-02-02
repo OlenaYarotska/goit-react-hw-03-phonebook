@@ -11,6 +11,23 @@ class App extends React.Component {
     contacts: [],
     filter: '',
   };
+  componentDidMount() {
+    const getContacts = localStorage.getItem(this.contacts);
+    const parsedContacts = JSON.parse(getContacts);
+
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  componentDidUpdate(prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      localStorage.setItem(
+        this.getContacts,
+        JSON.stringify(this.state.contacts),
+      );
+    }
+  }
 
   contactNames = () =>
     this.state.contacts.filter(contact =>
@@ -43,24 +60,6 @@ class App extends React.Component {
     this.state.contacts.some(
       contact => contact.name.toLowerCase() === name.toLowerCase(),
     );
-
-  componentDidMount() {
-    const getContacts = localStorage.getItem(this.contacts);
-    const parsedContacts = JSON.parse(getContacts);
-
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
-    }
-  }
-
-  componentDidUpdate(prevState) {
-    if (prevState.contacts !== this.state.contacts) {
-      localStorage.setItem(
-        this.getContacts,
-        JSON.stringify(this.state.contacts),
-      );
-    }
-  }
 
   render() {
     return (
